@@ -22,7 +22,8 @@ const routes: Routes = [
   },
   { path: 'map', loadChildren: './map/map.module#MapPageModule' }
   ,
-  { path: 'currentstate', component : CurrentStatComponent }
+  { path: 'currentstate', component : CurrentStatComponent },
+  { path: 'frame', loadChildren: './frame/frame.module#FramePageModule' }
 
 
 
