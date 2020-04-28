@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { HttpClient } from '@angular/common/http';
 
@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit{
   @ViewChild('barChart') barChart;
   @ViewChild('hrzBarChart') hrzBarChart;
   @ViewChild('hrzBarChart2') hrzBarChart2;
@@ -15,6 +15,41 @@ export class HomePage {
   @ViewChild('hrzBarChart4') hrzBarChart4;
   @ViewChild('hrzBarChart5') hrzBarChart5;
   @ViewChild('hrzBarChart6') hrzBarChart6;
+  Gouvernorats :any ; 
+  data : any; 
+  stat : Array<any> = new Array<any>();; 
+  date : string = new Date().getFullYear().toString()+'-'+(new Date().getMonth()+1).toString()+'-'+new Date().getDate().toString()   ; 
+  titles : Array<string > =  new Array<string>() ;
+  cases : Array<number > =  new Array<number>() ;
+  deaths : Array<number > =  new Array<number>() ;
+
+  constructor(private http : HttpClient) { }
+
+  ngOnInit(){
+    this.http.get('https://covid.tn/api/stats/cities/24/0 ').subscribe((data )=>{
+      this.Gouvernorats = data ;
+      this.Gouvernorats.data.forEach(element => {
+      this.http.get('https://covid.tn/api/stats/city/'+element.id+'/2020-04-25').subscribe((res : any)=>{
+       // console.log(res)
+        this.titles.push(element.title) ; 
+        this.cases.push(res.data[0].cases) ; 
+        this.deaths.push(res.data[0].deaths) ; 
+  
+        //   this.stat.push({title :element.title , 
+        //                   cases : res.data[0].cases , 
+        //                   deaths : res.data[0].deaths 
+        // })
+      })
+    });
+    
+    })
+   
+    console.log(this.cases)
+
+
+
+  }
+
 
   bars: any;
   hrzBars: any;
@@ -25,7 +60,6 @@ export class HomePage {
   hrzBars6: any;
   apiData: any;
   colorArray: any;
-  constructor(private http: HttpClient, ) { }
 
   ionViewDidEnter() {
     this.generateColorArray(8);
@@ -53,14 +87,17 @@ export class HomePage {
     }
   }
 
-  createBarChart() {
-    this.bars = new Chart(this.barChart.nativeElement, {
+  async createBarChart() {
+    this.bars = await new Chart(this.barChart.nativeElement, {
       type: 'bar',
       data: {
-        labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+        labels: this.titles,
+        //  labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
         datasets: [{
           label: 'Viewers in millions',
-          data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
+          data : this.cases , 
+
+          //  data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
           backgroundColor: 'rgb(38, 194, 129)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
           borderWidth: 1
@@ -82,10 +119,12 @@ export class HomePage {
     this.hrzBars = new Chart(this.hrzBarChart.nativeElement, {
       type: 'horizontalBar',
       data: {
-        labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+        labels: this.deaths,
+        //  labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
         datasets: [{
           label: 'Viewers in millions',
-          data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
+          data : this.cases , 
+          //   data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
           backgroundColor: 'rgb(38, 194, 129)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
           borderWidth: 1
@@ -109,10 +148,13 @@ export class HomePage {
     this.hrzBars2 = new Chart(ctx, {
       type: 'horizontalBar',
       data: {
-        labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+        labels: this.titles,
+
+    //    labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
         datasets: [{
           label: 'Viewers in millions',
-          data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
+          data : this.cases  , 
+          //   data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
           backgroundColor: 'rgb(38, 194, 129)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
           borderWidth: 1
@@ -142,10 +184,13 @@ export class HomePage {
     this.hrzBars3 = new Chart(ctx, {
       type: 'horizontalBar',
       data: {
-        labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+        labels: this.titles,
+
+        //labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
         datasets: [{
           label: 'Viewers in millions',
-          data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
+          data: this.deaths,
+          //  data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
           backgroundColor: this.colorArray, // array should have same number of elements as number of dataset
           borderColor: this.colorArray,// array should have same number of elements as number of dataset
           borderWidth: 1
@@ -175,10 +220,12 @@ export class HomePage {
     this.hrzBars4 = new Chart(ctx, {
       type: 'horizontalBar',
       data: {
-        labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+        labels : this.titles ,
+        //   labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
         datasets: [{
           label: 'Online viewers in millions',
-          data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
+          data : this.cases , 
+          //    data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
           backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
           borderWidth: 1
@@ -215,10 +262,12 @@ export class HomePage {
     this.hrzBars5 = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+        labels : this.titles , 
+        //  labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
         datasets: [{
           label: 'Online viewers in millions',
-          data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
+          data : this.deaths , 
+          //    data: [2.5, 3.8, 5, 6.9, 6.9, 7.5, 10, 17],
           backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
           borderWidth: 1
@@ -257,10 +306,13 @@ export class HomePage {
     this.hrzBars6 = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: this.apiData && this.apiData.labels,
+        labels : this.titles , 
+
+//        labels: this.apiData && this.apiData.labels,
         datasets: [{
           label: 'Online viewers in millions',
-          data: this.apiData && this.apiData.values,
+          data : this.cases , 
+          //  data: this.apiData && this.apiData.values,
           backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
           borderWidth: 1

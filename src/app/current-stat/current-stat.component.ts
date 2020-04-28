@@ -6,7 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./current-stat.component.scss'],
 })
 export class CurrentStatComponent implements OnInit {
-  ngOnInit() {}
+  
+  
+  async ngOnInit() {
+    setTimeout(()=>{
+      document.getElementById('content').innerHTML=document.getElementById('content').innerHTML ; 
+    })
+  }
 
 
 constructor(){  }

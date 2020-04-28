@@ -28,12 +28,22 @@ export class AppComponent {
     },{
       title: 'MAPS',
       url: '/map',
-      icon: 'maps'
+      icon: 'map'
     }
     ,{
       title: 'Current',
       url: '/currentstate',
-      icon: 'earth'
+      icon: 'planet'
+    }
+    ,{
+      title: 'Frame',
+      url: '/frame',
+      icon: 'planet'
+    }
+    ,{
+      title: 'Frame 2',
+      url: '/frame2',
+      icon: 'planet'
     }
   ];
 
