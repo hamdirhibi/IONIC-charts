@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-pie',
@@ -14,9 +15,13 @@ export class PiePage {
   hrzPies: any;
   dn: any;
   colorArray: any;
-  constructor() { }
+  data : any ; 
+  constructor(private http : HttpClient) { }
 
   ionViewDidEnter() {
+    this.http.get('https://thevirustracker.com/free-api?countryTimeline=TN').subscribe(data=> {
+      console.log(data)
+    })
     this.generateColorArray(8);
     this.createPieChart();
     this.createDnChart();

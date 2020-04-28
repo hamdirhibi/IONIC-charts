@@ -25,6 +25,15 @@ export class AppComponent {
       title: 'Pie Charts',
       url: '/pie',
       icon: 'pie'
+    },{
+      title: 'MAPS',
+      url: '/map',
+      icon: 'maps'
+    }
+    ,{
+      title: 'Current',
+      url: '/currentstate',
+      icon: 'earth'
     }
   ];
 

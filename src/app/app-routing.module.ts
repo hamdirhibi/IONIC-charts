@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { CurrentStatComponent } from './current-stat/current-stat.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,13 @@ const routes: Routes = [
   {
     path: 'pie',
     loadChildren: './pie/pie.module#PiePageModule'
-  }
+  },
+  { path: 'map', loadChildren: './map/map.module#MapPageModule' }
+  ,
+  { path: 'currentstate', component : CurrentStatComponent }
+
+
+
 ];
 
 @NgModule({
